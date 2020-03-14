@@ -1,1 +1,1 @@
-print ("Hello world")
+print ("Jak to zdac????")
