@@ -24,5 +24,18 @@ plot(radioSumSklepy, dane$przychody, xlab ="wydatki na radio, telewizje i pokazy
 reglinRadioSumSklepy <- lm(przychody ~ radioSumSklepy, dane)
 
 reglinRadioSklepy<- lm(przychody ~ radio+sklepy, dane)
-
 abline(reglinRadioSumSklepy)
+
+#oceny??????
+summary(reglinRadio)
+summary(reglinSklepy)
+summary(reglinRadioSumSklepy)
+summary(reglinRadioSklepy)
+
+
+par(mfrow=c(2,2))
+#diagnostyki
+plot(reglinRadio)
+plot(reglinSklepy)
+plot(reglinRadioSumSklepy)
+plot(reglinRadioSklepy)
