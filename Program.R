@@ -32,6 +32,8 @@ summary(reglinSklepy)
 summary(reglinRadioSumSklepy)
 summary(reglinRadioSklepy)
 
+#TODO: korytarze
+
 
 par(mfrow=c(2,2))
 #diagnostyki
@@ -39,3 +41,40 @@ plot(reglinRadio)
 plot(reglinSklepy)
 plot(reglinRadioSumSklepy)
 plot(reglinRadioSklepy)
+
+par(mfrow=c(1,1))
+#rezydua
+residRadio <- resid(reglinRadio)
+residSklepy <- resid(reglinSklepy)
+residRadioSumSklepy <- resid(reglinRadioSumSklepy)
+residRadioSklepy <- resid(reglinRadioSklepy)
+
+hist(residRadio,
+     ylim=c(0,20), 
+     xlab = "Wartość rezydów", 
+     ylab= "Częstotliwość", 
+     main = "Histogram  dla\nreklam")
+hist(residSklepy,
+     ylim=c(0,20), 
+     xlab = "Wartość rezydów", 
+     ylab= "Częstotliwość", 
+     main = "Histogram rezydów dla\npokazów")
+     
+hist(residRadioSumSklepy,
+     ylim=c(0,20), 
+     xlab = "Wartość rezydów", 
+     ylab= "Częstotliwość", 
+     main = "Histogram rezydów dla\nsumy pokazów i reklam")
+
+hist(residRadioSklepy, 
+     ylim=c(0,20), xlab = "Wartość rezydów", 
+     ylab= "Częstotliwość", 
+     main = "Histogram rezydów dla\npokazów i reklam")
+
+#test normalności rezydów
+shapiro.test(residRadio)
+shapiro.test(residSklepy) #tego napewno nie mamy powodów do odrzucenia
+shapiro.test(residRadioSumSklepy)
+shapiro.test(residRadioSklepy)
+
+
