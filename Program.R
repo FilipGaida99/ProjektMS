@@ -1,3 +1,4 @@
+source("Funkcje.R")
 #dane wejściowe
 dane<- read.csv(file = "dane.csv", header= TRUE)
 show(dane)
@@ -15,13 +16,13 @@ reglinSklepy <-lm(przychody ~ sklepy, dane)
 abline(reglinSklepy)
 
 
-radioSumSklepy = dane$radio + dane$sklepy
-
-plot(radioSumSklepy, dane$przychody, xlab ="wydatki na radio, telewizje i pokazy", ylab= "przychody")
+dane<- dodaj_sume_radia_i_sklepow(dane)
+plot(dane$radioSumSklepy, dane$przychody, xlab ="wydatki na radio, telewizje i pokazy", ylab= "przychody")
 reglinRadioSumSklepy <- lm(przychody ~ radioSumSklepy, dane)
+abline(dane$reglinRadioSumSklepy)
 
 reglinRadioSklepy<- lm(przychody ~ radio+sklepy, dane)
-abline(reglinRadioSumSklepy)
+
 
 #oceny??????
 summary(reglinRadio)
@@ -32,12 +33,11 @@ summary(reglinRadioSklepy)
 #TODO: korytarze
 
 
-par(mfrow=c(2,2))
 #diagnostyki
-plot(reglinRadio)
-plot(reglinSklepy)
-plot(reglinRadioSumSklepy)
-plot(reglinRadioSklepy)
+diagnostyka_regresji(reglinRadio)
+diagnostyka_regresji(reglinSklepy)
+diagnostyka_regresji(reglinRadioSumSklepy)
+diagnostyka_regresji(reglinRadioSklepy)
 
 par(mfrow=c(1,1))
 #rezydua
