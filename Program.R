@@ -24,14 +24,18 @@ abline(dane$reglinRadioSumSklepy)
 reglinRadioSklepy<- lm(przychody ~ radio+sklepy, dane)
 
 
-#oceny??????
+#oceny
 summary(reglinRadio)
 summary(reglinSklepy)
 summary(reglinRadioSumSklepy)
 summary(reglinRadioSklepy)
 
 #TODO: korytarze
-
+new.radio = seq(min(dane$radio), max(dane$radio), by=1.0)
+korytarze_ufnosci <- predict(reglinRadio, newdata = data.frame(radio = new.radio), interval="confidence",
+                         level = 0.95)
+lines(korytarze_ufnosci[,], col="blue", lty=2)
+lines(korytarze_ufnosci[,3], col="blue", lty=2)
 
 #diagnostyki
 diagnostyka_regresji(reglinRadio)
@@ -39,34 +43,12 @@ diagnostyka_regresji(reglinSklepy)
 diagnostyka_regresji(reglinRadioSumSklepy)
 diagnostyka_regresji(reglinRadioSklepy)
 
-par(mfrow=c(1,1))
 #rezydua
-residRadio <- resid(reglinRadio)
-residSklepy <- resid(reglinSklepy)
-residRadioSumSklepy <- resid(reglinRadioSumSklepy)
-residRadioSklepy <- resid(reglinRadioSklepy)
+residRadio <- histogram_rezyduow(reglinRadio,"Histogram  dla\nreklam")
+residSklepy <- histogram_rezyduow(reglinSklepy, "Histogram rezydów dla\npokazów")
+residRadioSumSklepy <- histogram_rezyduow(reglinRadioSumSklepy, "Histogram rezydów dla\nsumy pokazów i reklam")
+residRadioSklepy <- histogram_rezyduow(reglinRadioSklepy, "Histogram rezydów dla\npokazów i reklam")
 
-hist(residRadio,
-     ylim=c(0,20), 
-     xlab = "Wartość rezydów", 
-     ylab= "Częstotliwość", 
-     main = "Histogram  dla\nreklam")
-hist(residSklepy,
-     ylim=c(0,20), 
-     xlab = "Wartość rezydów", 
-     ylab= "Częstotliwość", 
-     main = "Histogram rezydów dla\npokazów")
-     
-hist(residRadioSumSklepy,
-     ylim=c(0,20), 
-     xlab = "Wartość rezydów", 
-     ylab= "Częstotliwość", 
-     main = "Histogram rezydów dla\nsumy pokazów i reklam")
-
-hist(residRadioSklepy, 
-     ylim=c(0,20), xlab = "Wartość rezydów", 
-     ylab= "Częstotliwość", 
-     main = "Histogram rezydów dla\npokazów i reklam")
 
 #test normalności rezydów
 shapiro.test(residRadio)

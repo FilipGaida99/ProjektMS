@@ -9,3 +9,13 @@ diagnostyka_regresji <-function(reglin){
   plot(reglin)
   par(mfrow=c(1,1))
 }
+
+histogram_rezyduow <- function(reglin, nazwa){
+  rezydua<- resid(reglin)
+  hist(rezydua,
+       ylim=c(0,20), 
+       xlab = "Wartość rezydów", 
+       ylab= "Częstotliwość", 
+       main = nazwa)
+  return(rezydua)
+}
