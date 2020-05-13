@@ -3,23 +3,23 @@ source("Funkcje.R")
 dane<- read.csv(file = "dane.csv", header= TRUE)
 show(dane)
 
+par(mfrow=c(1,1))
 #wykres zależności tygodniowych przychodów od wydatków na radio i telewizje
 plot(dane$radio,dane$przychody, xlab ="wydatki na radio i telewizje", ylab= "przychody")
 #model regresji linowej
 reglinRadio <-lm(przychody ~ radio, dane)
-#rysowanie linii, nie ma tego w poleceniu
-abline(reglinRadio)
+#korytarze ufności.
+korytarze_ufnosci(dane$przychody, dane$radio, 0.95)
 
 #wykres zależności tygodniowych przychodów od wydatków na pokazy sklepowe
 plot(dane$sklepy, dane$przychody, xlab ="wydatki na pokazy", ylab= "przychody")
 reglinSklepy <-lm(przychody ~ sklepy, dane)
-abline(reglinSklepy)
-
+korytarze_ufnosci(dane$przychody, dane$sklepy, 0.95)
 
 dane<- dodaj_sume_radia_i_sklepow(dane)
 plot(dane$radioSumSklepy, dane$przychody, xlab ="wydatki na radio, telewizje i pokazy", ylab= "przychody")
 reglinRadioSumSklepy <- lm(przychody ~ radioSumSklepy, dane)
-abline(dane$reglinRadioSumSklepy)
+korytarze_ufnosci(dane$przychody, dane$radioSumSklepy, 0.95)
 
 reglinRadioSklepy<- lm(przychody ~ radio+sklepy, dane)
 
@@ -29,13 +29,6 @@ summary(reglinRadio)
 summary(reglinSklepy)
 summary(reglinRadioSumSklepy)
 summary(reglinRadioSklepy)
-
-#TODO: korytarze
-new.radio = seq(min(dane$radio), max(dane$radio), by=1.0)
-korytarze_ufnosci <- predict(reglinRadio, newdata = data.frame(radio = new.radio), interval="confidence",
-                         level = 0.95)
-lines(korytarze_ufnosci[,], col="blue", lty=2)
-lines(korytarze_ufnosci[,3], col="blue", lty=2)
 
 #diagnostyki
 diagnostyka_regresji(reglinRadio)

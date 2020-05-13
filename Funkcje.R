@@ -19,3 +19,15 @@ histogram_rezyduow <- function(reglin, nazwa){
        main = nazwa)
   return(rezydua)
 }
+
+korytarze_ufnosci<- function(przychody, wydatki, poziom){
+  reglin<- lm(przychody ~ wydatki)
+  nowe.wydatki = seq(0,max(wydatki))
+  korytarze <- predict.lm(reglin, newdata = data.frame(wydatki = nowe.wydatki),interval="confidence",
+                               level = poziom)
+  lines(korytarze[,1], col="black")
+  lines(korytarze[,2], col="blue", lty=2)
+  lines(korytarze[,3], col="blue", lty=2)
+  
+  return(korytarze)
+}
