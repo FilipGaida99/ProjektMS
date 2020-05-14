@@ -43,6 +43,21 @@ residRadioSumSklepy <- histogram_rezyduow(reglinRadioSumSklepy, "Histogram rezyd
 residRadioSklepy <- histogram_rezyduow(reglinRadioSklepy, "Histogram rezydów dla\npokazów i reklam")
 
 
+#Test kolmogorowa
+#wg książki jak p-value jest wiesze niz poziom istotnosci to nie ma podstaw do odrzucenia hip. zerowej
+ks.test(residRadio, "pnorm", mean = mean(residRadio), sd = sd(residRadio))
+ks.test(residSklepy, "pnorm", mean = mean(residSklepy), sd = sd(residSklepy))#tu jakis blad wyskakuje
+ks.test(residRadioSumSklepy, "pnorm", mean = mean(residRadioSumSklepy), sd = sd(residRadioSumSklepy))
+ks.test(residRadioSklepy, "pnorm", mean = mean(residRadioSklepy), sd = sd(residRadioSklepy))
+
+#test kolmogorowa
+#wyznaczamy wart krytyczna
+test_res_radio<-kolmogorow_test2(residRadio)
+test_res_sklepy<-kolmogorow_test2(residSklepy)
+test_res_RadioSumSklepy<-kolmogorow_test2(residRadioSumSklepy)
+test_res_radioSklepy<-kolmogorow_test2(residRadioSklepy)# jesli nie nalezy do przedz. to nie odrz. hip. zerowej
+#przedzial trzeba wyznaczyc z tablic kolmogorowa
+
 #test normalności rezydów
 shapiro.test(residRadio)
 shapiro.test(residSklepy) #tego napewno nie mamy powodów do odrzucenia

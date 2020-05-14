@@ -31,3 +31,57 @@ korytarze_ufnosci<- function(przychody, wydatki, poziom){
   
   return(korytarze)
 }
+
+kolmogorow_test<-function(rezydua, poziom_istotnosci){
+  srednia <- mean(rezydua)
+  n <-length(rezydua)
+  czestosc <-c()
+  for(i in 1:n){
+    czestosc<-c(czestosc, i/n ) #i/n
+  }
+  
+  i_minus_1<-c()
+  for(i in 1:n){
+    i_minus_1<-c(i_minus_1, ((i-1)/n) ) #i-1/n
+  }
+  
+  wart_dystr_rozkl_norm<-c()# F0(x)
+  for(i in 1:n){
+    wart_dystr_rozkl_norm<-c(wart_dystr_rozkl_norm, pnorm(rezydua[i], mean=mean(rezydua), sd=sd(rezydua))) # F0(x)
+  }
+  
+  d_plus<-abs(czestosc - wart_dystr_rozkl_norm)
+  d_minus<-abs(wart_dystr_rozkl_norm - i_minus_1)
+  
+  wart<-c(max(d_plus), max(d_minus))
+  wart_stat_testowej<-max(wart)
+  
+  return(wart_stat_testowej)
+  
+  
+}
+
+#zwraca wart statystyki testowej
+kolmogorow_test2<-function(rezydua){
+  sredniaRadio <- mean(rezydua)
+  n <-length(rezydua)
+  czestosc <-c()
+  i_minus_1<-c()
+  wart_dystr_rozkl_norm<-c()
+  k=1
+  while(k <= n){
+    czestosc<-c(czestosc, k/n ) #liczy dobrze
+    i_minus_1<-c(i_minus_1, ((k-1)/n) ) #i-1/n liczy dobrze
+    wart_dystr_rozkl_norm<-c(wart_dystr_rozkl_norm, pnorm(rezydua[k], mean=mean(rezydua), sd=sd(rezydua)))#to nwm ma liczyc wart dystrybuanty rozkl normalnego
+    k=k+1
+    
+  }
+  d_plus<-abs(czestosc - wart_dystr_rozkl_norm)
+  d_minus<-abs(wart_dystr_rozkl_norm - i_minus_1)
+  
+  wart<-c(max(d_plus), max(d_minus))
+  wart_stat_testowej<-max(wart)
+  
+  return(wart_stat_testowej)
+  
+}
