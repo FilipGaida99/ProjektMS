@@ -25,10 +25,10 @@ reglinRadioSklepy<- lm(przychody ~ radio+sklepy, dane)
 
 
 #oceny
-summary(reglinRadio)
-summary(reglinSklepy)
-summary(reglinRadioSumSklepy)
-summary(reglinRadioSklepy)
+print(summary(reglinRadio))
+print(summary(reglinSklepy))
+print(summary(reglinRadioSumSklepy))
+print(summary(reglinRadioSklepy))
 
 #diagnostyki
 diagnostyka_regresji(reglinRadio)
@@ -41,7 +41,6 @@ residRadio <- histogram_rezyduow(reglinRadio,"Histogram  dla\nreklam")
 residSklepy <- histogram_rezyduow(reglinSklepy, "Histogram rezydów dla\npokazów")
 residRadioSumSklepy <- histogram_rezyduow(reglinRadioSumSklepy, "Histogram rezydów dla\nsumy pokazów i reklam")
 residRadioSklepy <- histogram_rezyduow(reglinRadioSklepy, "Histogram rezydów dla\npokazów i reklam")
-
 
 #Test kolmogorowa
 #wg książki jak p-value jest wiesze niz poziom istotnosci to nie ma podstaw do odrzucenia hip. zerowej
