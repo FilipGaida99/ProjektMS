@@ -24,7 +24,7 @@ korytarze_ufnosci<- function(przychody, wydatki, poziom){
   reglin<- lm(przychody ~ wydatki)
   nowe.wydatki = seq(0,max(wydatki))
   korytarze <- predict.lm(reglin, newdata = data.frame(wydatki = nowe.wydatki),interval="confidence",
-                               level = poziom)
+                          level = poziom)
   lines(korytarze[,1], col="black")
   lines(korytarze[,2], col="blue", lty=2)
   lines(korytarze[,3], col="blue", lty=2)
@@ -32,56 +32,26 @@ korytarze_ufnosci<- function(przychody, wydatki, poziom){
   return(korytarze)
 }
 
-kolmogorow_test<-function(rezydua, poziom_istotnosci){
-  srednia <- mean(rezydua)
-  n <-length(rezydua)
-  czestosc <-c()
-  for(i in 1:n){
-    czestosc<-c(czestosc, i/n ) #i/n
-  }
+
+lilliefors_test<-function(rezydua){
+  n <- length(rezydua)
+  sorted <- sort(rezydua)
+  standaryzacja = ( (sorted-mean(sorted))/sd(sorted))  #wartosci zmiennej zestandaryzowanej (X0 - Xsr)/s
+  dystryb_emp = pnorm(standaryzacja) #liczymy dystrybuanty dla zmiennej zestandaryzowanej
+  k = 1
+  wektor_czestosci <-c() #i/n inicjalizacja wektora jak NULL
+  wektor_minus1 <-c()    #(i-1)/n
+  while(k <= n){
+    wektor_czestosci<-c(wektor_czestosci, k/n ) #i/n
+    wektor_minus1<-c(wektor_minus1, ((k-1)/n) ) #i-1/n
+    k=k+1
+  } # stablicowanie (i-1)/n oraz i/n
   
-  i_minus_1<-c()
-  for(i in 1:n){
-    i_minus_1<-c(i_minus_1, ((i-1)/n) ) #i-1/n
-  }
+  d_plus <- abs(wektor_czestosci - dystryb_emp)
+  d_minus <- abs(dystryb_emp - wektor_minus1)
   
-  wart_dystr_rozkl_norm<-c()# F0(x)
-  for(i in 1:n){
-    wart_dystr_rozkl_norm<-c(wart_dystr_rozkl_norm, pnorm(rezydua[i], mean=mean(rezydua), sd=sd(rezydua))) # F0(x)
-  }
-  
-  d_plus<-abs(czestosc - wart_dystr_rozkl_norm)
-  d_minus<-abs(wart_dystr_rozkl_norm - i_minus_1)
-  
-  wart<-c(max(d_plus), max(d_minus))
-  wart_stat_testowej<-max(wart)
-  
-  return(wart_stat_testowej)
-  
+  wartosc_stat_test = max(d_plus, d_minus)
+  return(wartosc_stat_test)
   
 }
 
-#zwraca wart statystyki testowej
-kolmogorow_test2<-function(rezydua){
-  sredniaRadio <- mean(rezydua)
-  n <-length(rezydua)
-  czestosc <-c()
-  i_minus_1<-c()
-  wart_dystr_rozkl_norm<-c()
-  k=1
-  while(k <= n){
-    czestosc<-c(czestosc, k/n ) #liczy dobrze
-    i_minus_1<-c(i_minus_1, ((k-1)/n) ) #i-1/n liczy dobrze
-    wart_dystr_rozkl_norm<-c(wart_dystr_rozkl_norm, pnorm(rezydua[k], mean=mean(rezydua), sd=sd(rezydua)))#to nwm ma liczyc wart dystrybuanty rozkl normalnego
-    k=k+1
-    
-  }
-  d_plus<-abs(czestosc - wart_dystr_rozkl_norm)
-  d_minus<-abs(wart_dystr_rozkl_norm - i_minus_1)
-  
-  wart<-c(max(d_plus), max(d_minus))
-  wart_stat_testowej<-max(wart)
-  
-  return(wart_stat_testowej)
-  
-}
