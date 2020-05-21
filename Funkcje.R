@@ -55,3 +55,16 @@ lilliefors_test<-function(rezydua){
   
 }
 
+lilliefors_przedzial<-function(rezydua) {
+  n<-length(rezydua)
+  przedzial<-0.886/sqrt(n)
+  
+  return(przedzial)
+}
+
+lilliefors_hipoteza<-function(wart_stat, przedzial) {
+  if (wart_stat<=1 && wart_stat>przedzial)
+    return("Odrzucamy hipotezę H0, przyjmujemy H1")
+  else
+    return("Nie ma podstaw do odrzucenia hipotezy H0")
+}

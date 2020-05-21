@@ -54,4 +54,19 @@ wart_stat_Sklepy <- lilliefors_test(residSklepy)
 wart_stat_RadioSumSklepy <- lilliefors_test(residRadioSumSklepy)
 wart_stat_RadioSklepy <- lilliefors_test(residRadioSklepy)
 
+#przedzial
+przedzial_Radio <- lilliefors_przedzial(residRadio)
+przedzial_Sklepy <- lilliefors_przedzial(residSklepy)
+przedzial_RadioSumSklepy <- lilliefors_przedzial(residRadioSumSklepy)
+przedzial_RadioSklepy <- lilliefors_przedzial(residRadioSklepy)
 
+#hipoteza
+hipoteza_Radio <- lilliefors_hipoteza(wart_stat_Radio, przedzial_Radio)
+hipoteza_Sklepy <- lilliefors_hipoteza(wart_stat_Sklepy, przedzial_Sklepy)
+hipoteza_RadioSumSklepy <- lilliefors_hipoteza(wart_stat_RadioSumSklepy, przedzial_RadioSumSklepy)
+hipoteza_RadioSklepy <- lilliefors_hipoteza(wart_stat_RadioSklepy, przedzial_RadioSklepy)
+
+show(hipoteza_Radio)
+show(hipoteza_Sklepy)
+show(hipoteza_RadioSumSklepy)
+show(hipoteza_RadioSklepy)
