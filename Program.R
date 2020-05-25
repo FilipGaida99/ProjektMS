@@ -1,4 +1,4 @@
-rssource("Funkcje.R")
+source("Funkcje.R")
 
 #dane wejściowe
 dane<- read.csv(file = "dane.csv", header= TRUE)
