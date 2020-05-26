@@ -17,22 +17,20 @@ plot(dane$sklepy, dane$przychody, xlab ="wydatki na pokazy", ylab= "przychody")
 reglinSklepy <-lm(przychody ~ sklepy, dane)
 korytarze_ufnosci(dane$przychody, dane$sklepy, 0.95)
 
+#wykres zależności tygodniowych przychodów od wydatków na reklamę radiową i pokazy sklepowe
 dane<- dodaj_sume_radia_i_sklepow(dane)
 plot(dane$radioSumSklepy, dane$przychody, xlab ="wydatki na radio, telewizje i pokazy", ylab= "przychody")
 reglinRadioSumSklepy <- lm(przychody ~ radioSumSklepy, dane)
 korytarze_ufnosci(dane$przychody, dane$radioSumSklepy, 0.95)
 
+#model regresji dla przychodów od wydatków na reklamę radiową i pokazy sklepowe.
 reglinRadioSklepy<- lm(przychody ~ (radio+sklepy), dane)
-show(dane)
-show(reglinRadioSklepy)
-show(reglinRadioSumSklepy)
-
 
 #oceny
-summary(reglinRadio)
-summary(reglinSklepy)
-summary(reglinRadioSumSklepy)
-summary(reglinRadioSklepy)
+show(summary(reglinRadio))
+show(summary(reglinSklepy))
+show(summary(reglinRadioSumSklepy))
+show(summary(reglinRadioSklepy))
 
 #diagnostyki
 diagnostyka_regresji(reglinRadio)
@@ -48,7 +46,6 @@ residRadioSklepy <- histogram_rezyduow(reglinRadioSklepy, "Histogram rezydów dl
 
 
 #test lilieforsa
-
 wart_stat_Radio <- lilliefors_test(residRadio)
 wart_stat_Sklepy <- lilliefors_test(residSklepy)
 wart_stat_RadioSumSklepy <- lilliefors_test(residRadioSumSklepy)
@@ -66,6 +63,7 @@ hipoteza_Sklepy <- lilliefors_hipoteza(wart_stat_Sklepy, przedzial_Sklepy)
 hipoteza_RadioSumSklepy <- lilliefors_hipoteza(wart_stat_RadioSumSklepy, przedzial_RadioSumSklepy)
 hipoteza_RadioSklepy <- lilliefors_hipoteza(wart_stat_RadioSklepy, przedzial_RadioSklepy)
 
+#wypisanie wyników testowania hipotez
 show(hipoteza_Radio)
 show(hipoteza_Sklepy)
 show(hipoteza_RadioSumSklepy)

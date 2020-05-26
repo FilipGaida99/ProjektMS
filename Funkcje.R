@@ -4,12 +4,14 @@ dodaj_sume_radia_i_sklepow <- function(dane){
   return(dane)
 }
 
+#generuje 4 wykresy dla diagnostyki modelu regresji podanego jako parametr.
 diagnostyka_regresji <-function(reglin){
   par(mfrow=c(2,2))
   plot(reglin)
   par(mfrow=c(1,1))
 }
 
+#tworzy histogram rezyduów. Zwraca wyliczone reszty.
 histogram_rezyduow <- function(reglin, nazwa){
   rezydua<- resid(reglin)
   hist(rezydua,
@@ -20,6 +22,7 @@ histogram_rezyduow <- function(reglin, nazwa){
   return(rezydua)
 }
 
+#rysuje na istniejącym graficznym przedstawieniu danych prostą regresji oraz korytarze ufności.
 korytarze_ufnosci<- function(przychody, wydatki, poziom){
   reglin<- lm(przychody ~ wydatki)
   nowe.wydatki = seq(0,max(wydatki))
@@ -32,7 +35,7 @@ korytarze_ufnosci<- function(przychody, wydatki, poziom){
   return(korytarze)
 }
 
-
+#wykonuje test Kołmogorowa-Smirnowa. Zwraca wartość statystyki testowej.
 lilliefors_test<-function(rezydua){
   n <- length(rezydua)
   sorted <- sort(rezydua)
@@ -55,6 +58,7 @@ lilliefors_test<-function(rezydua){
   
 }
 
+#oblicza przedział krytyczny dla testu.
 lilliefors_przedzial<-function(rezydua) {
   n<-length(rezydua)
   przedzial<-0.886/sqrt(n)
@@ -62,6 +66,7 @@ lilliefors_przedzial<-function(rezydua) {
   return(przedzial)
 }
 
+#generuje tekst określający wynik przeprowadzonego testu.
 lilliefors_hipoteza<-function(wart_stat, przedzial) {
   if (wart_stat<=1 && wart_stat>przedzial)
     return("Odrzucamy hipotezę H0, przyjmujemy H1")
